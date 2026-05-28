@@ -5,8 +5,7 @@
 --CTE standalon
 
 WITH monthly_sales AS (SELECT 
-	YEAR(order_date) a_year,
-	MONTH(order_date) a_month,
+	FORMAT( order_date, 'MM-yyyy') date_order,
 	city , store_name ,
 	count((customer_id)) total_cust,
 	COUNT(order_id) total_orders,
@@ -16,19 +15,11 @@ WITH monthly_sales AS (SELECT
 	ROUND(SUM(profit),2) profits
 	
 FROM chocolate_database
-GROUP BY City , store_name ,YEAR(order_date) ,
-	MONTH(order_date) )
+GROUP BY City , store_name , FORMAT( order_date, 'MM-yyyy'))
 
 
 --main query +subquery
 SELECT *
 
-
-FROM(SELECT *,
-
-	SUM(total_sales) OVER(PARTITION BY city) total_sales_by_city,
-	SUM(total_cost) OVER(PARTITION BY city) total_cost_by_city
-
-
-FROM monthly_sales) F
-ORDER BY a_year, a_month, store_name
+FROM monthly_sales
+ORDER BY store_name

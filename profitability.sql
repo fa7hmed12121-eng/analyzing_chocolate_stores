@@ -16,7 +16,7 @@ GROUP BY store_name, city
 --Main query
 --Subquery
 SELECT *,
-CONCAT(ROUND((costs/revenues)*100,1),'%') stores_cost,
+CONCAT(ROUND((costs/revenues)*100,1),'%') store_cost,
 CONCAT(ROUND((profits/revenues) *100,1), '%') Store_sells
 
 FROM (SELECT 

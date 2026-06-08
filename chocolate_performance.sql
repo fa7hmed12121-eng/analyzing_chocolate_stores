@@ -26,6 +26,7 @@ all_aggre as (SELECT
 	ROUND(SUM(cost),2) costs,
 	ROUND(SUM(profit),2)profits,
 	COUNT(DISTINCT (order_id)) unique_orders
+	
 
  FROM Chocolate_sales
  GROUP BY order_id
@@ -43,7 +44,8 @@ all_aggre as (SELECT
 
 --Average Order value aov
 SELECT 
-	customer_id,
+	
+	customer_id,gender,age,first_order,
 	unique_orders,
 	cus_order,
 	round((spend/unique_orders),2) cu_spends,
@@ -51,6 +53,7 @@ SELECT
 
 FROM(SELECT 
 	ch.customer_id,ch.gender,ch.age,
+	min(ch.order_date) first_order,
 	sum(all_orders) cus_order,
 	COUNT(DISTINCT(al.order_id)) unique_orders,
 	SUM(al.revenues) spend

@@ -1,9 +1,8 @@
 ---- Products Sales
----CTE Multiples
+---CTE 
 
 SELECT
-	city,
-	FORMAT(order_date, 'ddd-MM-yyyy') date,
+	FORMAT(order_date, 'dd-MMM-yyyy') date,
 	brand,
 	product_name,
 	COUNT(order_id) total_orders,
@@ -14,6 +13,6 @@ SELECT
 
 FROM chocolate_database
 
-WHERE product_name IS NOT NULL
-GROUP BY city, brand, product_name, FORMAT(order_date, 'ddd-MM-yyyy') 
+WHERE  FORMAT(order_date, 'dd-MMM-yyyy')  IS not NULL
+GROUP BY  brand, product_name, FORMAT(order_date, 'dd-MMM-yyyy') 
 ORDER BY date

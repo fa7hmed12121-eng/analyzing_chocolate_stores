@@ -22,4 +22,5 @@ GROUP BY City , store_name , FORMAT( order_date, 'MM-yyyy'))
 SELECT *
 
 FROM monthly_sales
+
 ORDER BY store_name

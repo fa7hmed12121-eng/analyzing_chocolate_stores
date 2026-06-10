@@ -1,5 +1,4 @@
 
-ORDER BY n_customer DESC*/
 /*--------------------------------
 	CTEs 
 -- customers sales
@@ -23,12 +22,12 @@ GROUP BY customer_id
 --- Second CTE
 average_days_customers as (SELECT 
 	customer_id,
-	total_spending,
+	avg_spending,
 	DATEDIFF(day,order_date, next_order) days_of_orders
 FROM(SELECT 
 	customer_id,
 	order_date ,
-	AVG(revenue) OVER(PARTITION BY customer_id) total_spending,
+	AVG(revenue) OVER(PARTITION BY customer_id) avg_spending,
 	LEAD(order_date) OVER(PARTITION BY customer_id ORDER BY order_date)next_order
 
 FROM chocolate_database )f
@@ -39,18 +38,18 @@ FROM chocolate_database )f
 customers_sales AS (
 
 	SELECT 
-	t.customer_id,t.age, t.gender, t.loyalty_member,t.join_date, total_spending,
+	t.customer_id,t.age, t.gender, t.loyalty_member,t.join_date, avg_spending,
 	b.total_orders, b.quantity, b.total_sales,t.customer_retention
 
 FROM(SELECT
-	customer_id, age, gender, loyalty_member, join_date,total_spending,
+	customer_id, age, gender, loyalty_member, join_date,avg_spending,
 	AVG(days_of_orders) customer_retention
 
 FROM(
 
 	SELECT 
 		c.customer_id ,c.age, c.gender,c.loyalty_member,c.join_date,
-		av.total_spending,av.days_of_orders
+		av.avg_spending,av.days_of_orders
 	
 
 
@@ -59,13 +58,33 @@ FROM(
 	ON c.customer_id = av.customer_id
 
 )f
-GROUP BY 	customer_id, age, gender, loyalty_member, join_date, total_spending)t
+GROUP BY 	customer_id, age, gender, loyalty_member, join_date, avg_spending)t
 
 LEFT JOIN customers_behivor b
-ON b.customer_id = t.customer_id)
+ON b.customer_id = t.customer_id),
+
+
+
+--Third CTE 
+customer_favoirate_product AS (SELECT *
+FROM( SELECT 
+	customer_id,
+	product_name,
+	COUNT(*) purchase_time,
+	ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY COUNT(*) DESC) numbers
+FROM chocolate_database
+
+GROUP BY customer_id, product_name )f
+WHERE numbers = 1)
 
 -- Main query
-SELECT * 
-from customers_sales
+SELECT
+	s.customer_id, s.age, s.gender, s.loyalty_member, 
+	s.join_date,c.product_name,s.avg_spending, s.total_orders, 
+	s.quantity, s.total_sales, s.customer_retention
+
+from customers_sales s
+LEFT JOIN customer_favoirate_product c
+ON s.customer_id = c.customer_id
 ORDER BY customer_retention
 

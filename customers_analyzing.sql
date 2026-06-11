@@ -1,5 +1,4 @@
 
-ORDER BY n_customer DESC*/
 /*--------------------------------
 	CTEs 
 -- customers sales

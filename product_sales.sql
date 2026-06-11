@@ -1,4 +1,4 @@
----- Products Sales
+---- Products Monthly Sales
 ---CTE 
 
 SELECT
@@ -18,7 +18,7 @@ GROUP BY  brand, product_name, FORMAT(order_date, 'dd-MMM-yyyy')
 ORDER BY date
 
 /*----------------------------
-  customers favoirate product
+  customers favorite product
 -----------------------------*/
 SELECT *
 FROM( SELECT 

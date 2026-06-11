@@ -32,7 +32,7 @@ GROUP BY ne_discount
 ORDER BY number_of_orders DESC
 
 /*- -REVENUE LEAKAGE---
-  Find the difference between potential revenue vs acual revenue */
+  Find the difference between potential revenue vs actuale revenue */
 SELECT 
 	COUNT(quantity) n_orders,
 	ROUND(SUM(potential_re),2) total_potential,

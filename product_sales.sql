@@ -1,4 +1,4 @@
----- Products Monthly Sales
+---- Products Sales
 ---CTE 
 
 SELECT
@@ -30,3 +30,12 @@ FROM chocolate_database
 
 GROUP BY customer_id, product_name )f
 WHERE numbers = 1
+
+
+SELECT * 
+
+From(SELECT brand, product_name, COUNT(*) times_purches,
+	ROW_NUMBER() OVER(PARTITION BY brand ORDER BY COUNT(*) DESC) RENK
+FROM chocolate_database
+GROUP BY brand, product_name
+)t	

@@ -6,7 +6,7 @@
 
 WITH monthly_sales AS (SELECT 
 	FORMAT( order_date, 'MM-yyyy') date_order,
-	city , store_name ,
+	city ,store_type, store_name ,
 	count((customer_id)) total_cust,
 	COUNT(order_id) total_orders,
 	ROUND(SUM(quantity),2) quantity,
@@ -15,7 +15,7 @@ WITH monthly_sales AS (SELECT
 	ROUND(SUM(profit),2) profits
 	
 FROM chocolate_database
-GROUP BY City , store_name , FORMAT( order_date, 'MM-yyyy'))
+GROUP BY City , store_name ,store_type, FORMAT( order_date, 'MM-yyyy'))
 
 
 --main query +subquery
